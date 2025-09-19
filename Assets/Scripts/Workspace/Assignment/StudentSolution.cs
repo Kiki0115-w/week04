@@ -1,10 +1,11 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using AssignmentSystem.Services;
 using Debug = AssignmentSystem.Services.AssignmentDebugConsole;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System;
 
 namespace Assignment
 {
@@ -52,7 +53,7 @@ namespace Assignment
             PrintLCT01(linkedlist);
             // ["Node 0.5"]<->["Node 1"]<->["Node 1.5"]
 
-            //linkedlist.Count; ¢π“¥¢Õß linkedList
+            //linkedlist.Count; ¬¢¬π√í¬¥¬¢√ç¬ß linkedList
         }
 
         private void PrintLCT01(LinkedList<string> l)
@@ -66,15 +67,15 @@ namespace Assignment
 
         public void LCT02_SyntaxHashTable()
         {
-            // 1.  √È“ß Hashtable
+            // 1. √ä√É√©√í¬ß Hashtable
             Hashtable hashtable = new Hashtable();
 
-            // 2. °“√‡æ‘Ë¡¢ÈÕ¡Ÿ≈≈ß„π Hashtable
+            // 2. ¬°√í√É√†¬æ√î√®√Å¬¢√©√ç√Å√ô√Ö√Ö¬ß√£¬π Hashtable
             hashtable.Add(1, "Apple");
             hashtable.Add(2, "Banana");
             hashtable.Add("bad-fruit", "Rotten Tomato");
 
-            // 3. ‡¢È“∂÷ß¢ÈÕ¡Ÿ≈„π Hashtable ¥È«¬ Key
+            // 3. √†¬¢√©√í¬∂√ñ¬ß¬¢√©√ç√Å√ô√Ö√£¬π Hashtable ¬¥√©√á√Ç Key
             string fruit1 = (string)hashtable[1];
             string fruit2 = (string)hashtable[2];
             string badFruit = (string)hashtable["bad-fruit"];
@@ -82,10 +83,10 @@ namespace Assignment
             Debug.Log($"fruit2: {fruit2}");
             Debug.Log($"badFruit: {badFruit}");
 
-            // 4. · ¥ß¢ÈÕ¡Ÿ≈„π Hashtable
+            // 4. √°√ä¬¥¬ß¬¢√©√ç√Å√ô√Ö√£¬π Hashtable
             LCT02_PrintHashTable(hashtable);
 
-            // 5. µ√«® Õ∫°“√¡’Õ¬ŸË¢Õß Key
+            // 5. ¬µ√É√á¬®√ä√ç¬∫¬°√í√É√Å√ï√ç√Ç√ô√®¬¢√ç¬ß Key
             int key = 2;
             if (hashtable.ContainsKey(key))
             {
@@ -96,7 +97,7 @@ namespace Assignment
                 Debug.Log($"not found {key}");
             }
 
-            // 6. ≈∫¢ÈÕ¡Ÿ≈ÕÕ°®“° Hashtable
+            // 6. √Ö¬∫¬¢√©√ç√Å√ô√Ö√ç√ç¬°¬®√í¬° Hashtable
             int keyToRemove = 1;
             hashtable.Remove(keyToRemove);
             LCT02_PrintHashTable(hashtable);
@@ -104,7 +105,7 @@ namespace Assignment
 
         private void LCT02_PrintHashTable(Hashtable hashtable)
         {
-            // 4. · ¥ß¢ÈÕ¡Ÿ≈„π Hashtable
+            // 4. √°√ä¬¥¬ß¬¢√©√ç√Å√ô√Ö√£¬π Hashtable
             Debug.Log("table ...");
             foreach (DictionaryEntry entry in hashtable)
             {
@@ -161,47 +162,155 @@ namespace Assignment
 
         public void AS01_CountWords(string[] words)
         {
-            throw new System.NotImplementedException();
+            if (words == null) return;
+            var freq = new Dictionary<string, int>();
+            for (int i = 0; i < words.Length; i++)
+            {
+                var w = words[i];
+                if (w == null) continue;
+                if (freq.ContainsKey(w)) freq[w]++;
+                else freq[w] = 1;
+            }
+
+            foreach (var kv in freq)
+                Debug.Log($"word: '{kv.Key}' count: {kv.Value}");
         }
 
         public void AS02_CountNumber(int[] numbers)
         {
-            throw new System.NotImplementedException();
+            if (numbers == null) return;
+            var freq = new Dictionary<int, int>();
+            foreach (var n in numbers)
+            {
+                if (freq.ContainsKey(n)) freq[n]++;
+                else freq[n] = 1;
+            }
+
+            foreach (var kv in freq)
+                Debug.Log($"number: {kv.Key} count: {kv.Value}");
         }
 
         public void AS03_CheckValidBrackets(string input)
         {
-            throw new System.NotImplementedException();
+            if (input == null) { Debug.Log("Invalid"); return; }
+            var map = new Dictionary<char, char> { { '(', ')' }, { '[', ']' }, { '{', '}' } };
+            var stack = new LinkedList<char>();
+
+            foreach (var ch in input)
+            {
+                if (map.ContainsKey(ch))
+                {
+                    stack.AddLast(ch);
+                }
+                else if (map.ContainsValue(ch))
+                {
+                    if (stack.Count == 0) { Debug.Log("Invalid"); return; }
+                    var lastOpen = stack.Last.Value;
+                    if (map[lastOpen] == ch) stack.RemoveLast();
+                    else { Debug.Log("Invalid"); return; }
+                }
+            }
+
+            Debug.Log(stack.Count == 0 ? "Valid" : "Invalid");
         }
 
         public void AS04_PrintReverseLinkedList(LinkedList<int> list)
         {
-            throw new System.NotImplementedException();
+            if (list == null || list.Count == 0) { Debug.Log("List is empty"); return; }
+            var node = list.Last;
+            while (node != null)
+            {
+                Debug.Log(node.Value);
+                node = node.Previous;
+            }
         }
 
         public void AS05_FindMiddleElement(LinkedList<string> list)
         {
-            throw new System.NotImplementedException();
+            if (list == null || list.Count == 0) { Debug.Log("List is empty"); return; }
+            var slow = list.First;
+            var fast = list.First;
+            while (fast != null && fast.Next != null)
+            {
+                slow = slow.Next;
+                fast = fast.Next.Next;
+            }
+            Debug.Log(slow.Value);
         }
 
         public void AS06_MergeDictionaries(Dictionary<string, int> dict1, Dictionary<string, int> dict2)
         {
-            throw new System.NotImplementedException();
+            var merged = new Dictionary<string, int>();
+            if (dict1 != null)
+            {
+                foreach (var kv in dict1) merged[kv.Key] = kv.Value;
+            }
+
+            if (dict2 != null)
+            {
+                foreach (var kv in dict2)
+                {
+                    if (merged.ContainsKey(kv.Key)) merged[kv.Key] += kv.Value;
+                    else merged[kv.Key] = kv.Value;
+                }
+            }
+            foreach (var kv in merged) Debug.Log($"key: {kv.Key}, value: {kv.Value}");
         }
 
         public void AS07_RemoveDuplicatesFromLinkedList(LinkedList<int> list)
         {
-            throw new System.NotImplementedException();
+            if (list == null) { Debug.Log("List is null"); return; }
+            if (list.Count <= 1)
+            {
+                foreach (var v in list) Debug.Log(v);
+                return;
+            }
+
+            var seen = new Dictionary<int, bool>();
+            var node = list.First;
+            while (node != null)
+            {
+                var next = node.Next;
+                if (seen.ContainsKey(node.Value))
+                {
+                    list.Remove(node);
+                }
+                else
+                {
+                    seen[node.Value] = true;
+                }
+                node = next;
+            }
+
+            foreach (var v in list) Debug.Log(v);
         }
 
         public void AS08_TopFrequentNumber(int[] numbers)
         {
-            throw new System.NotImplementedException();
+            if (numbers == null || numbers.Length == 0) { Debug.Log("Input array is empty"); return; }
+
+            var freq = new Dictionary<int, int>();
+            foreach (var n in numbers) if (freq.ContainsKey(n)) freq[n]++; else freq[n] = 1;
+            int maxCount = freq.Values.Max();
+
+            int chosen = numbers[0];
+            foreach (var n in numbers)
+            {
+                if (freq[n] == maxCount) { chosen = n; break; }
+            }
+
+            Debug.Log($"{chosen} count: {maxCount}");
         }
 
         public void AS09_PlayerInventory(Dictionary<string, int> inventory, string itemName, int quantity)
         {
-            throw new System.NotImplementedException();
+
+            if (inventory == null) { Debug.Log("Inventory is null"); return; }
+            if (string.IsNullOrEmpty(itemName)) return;
+            if (inventory.ContainsKey(itemName)) inventory[itemName] += quantity;
+            else inventory[itemName] = quantity;
+
+            foreach (var kv in inventory) Debug.Log($"{kv.Key}: {kv.Value}");
         }
 
         #endregion 
@@ -210,12 +319,53 @@ namespace Assignment
 
         public void EX01_GameEventQueue(LinkedList<GameEvent> eventQueue)
         {
-            throw new System.NotImplementedException();
+            if (eventQueue == null || eventQueue.Count == 0)
+            {
+                Debug.Log("Event queue is empty");
+                return;
+            }
+
+            while (eventQueue.Count > 0)
+            {
+                GameEvent ev = eventQueue.First.Value;
+                eventQueue.RemoveFirst();
+
+                Debug.Log($"Processing event: {ev.Name}");
+                Debug.Log($"Remaining events in queue: {eventQueue.Count}");
+
+                string type = ev.EventType?.ToLower(); 
+
+                switch (type)
+                {
+                    case "enemy":
+                        Debug.Log($"Enemy event processed - {ev.Name}");
+                        break;
+                    case "powerup":
+                        Debug.Log($"Power-up event processed - {ev.Name}");
+                        break;
+                    case "level":
+                        Debug.Log($"Level event processed - {ev.Name}");
+                        break;
+                    case "achievement":
+                        Debug.Log($"Achievement unlocked - {ev.Name}");
+                        break;
+                    default:
+                        Debug.Log($"Generic event processed - {ev.Name}");
+                        break;
+                }
+            }
         }
 
         public void EX02_PlayerStatsTracker(Dictionary<string, int> playerStats, string statName, int value)
         {
-            throw new System.NotImplementedException();
+            if (playerStats == null) { Debug.Log("PlayerStats is null"); return; }
+            if (string.IsNullOrEmpty(statName)) return;
+            if (playerStats.ContainsKey(statName)) playerStats[statName] += value;
+            else playerStats[statName] = value;
+
+            Debug.Log($"Updated {statName}: {playerStats[statName]}");
+            Debug.Log("Current player statistics:");
+            foreach (var kv in playerStats) Debug.Log($"{kv.Key}: {kv.Value}");
         }
 
         #endregion
